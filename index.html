@@ -16,18 +16,13 @@
 <main class="container">
 
 <h1>Акройога Флаер</h1>
-<p class="subtitle">Расчёт спортивного разряда v2.2</p>
+<p class="subtitle">Расчёт спортивного разряда</p>
 
 <form id="flyer-form">
 
 <section class="personal">
 <input type="text" name="fullname" placeholder="ФИО" required>
 <input type="text" name="city" placeholder="Город" required>
-<select name="diploma" required>
-<option value="">Тип диплома</option>
-<option>Стандартный</option>
-<option>Премиальный</option>
-</select>
 </section>
 
 <section class="grid">
@@ -39,13 +34,14 @@
 
 </section>
 
-<button class="submit">Сформировать разряд</button>
+<button class="submit" type="button">Рассчитать разряд</button>
+
+<section id="result" class="result" aria-live="polite"></section>
 
 </form>
 
 </main>
 
-<script src="./js/result-template.js" defer></script>
 <script src="./js/main.js" defer></script>
 </body>
 </html>
