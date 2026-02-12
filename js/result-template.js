@@ -14,19 +14,18 @@ const html=`
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Результат — ${data.rank}</title>
 
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-
 <style>
 body{
 margin:0;
-font-family:system-ui;
-min-height:100dvh;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
 background:linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
 perspective:1400px;
+overflow:hidden;
 }
 
 .card{
@@ -35,11 +34,12 @@ backdrop-filter:blur(20px);
 border-radius:30px;
 padding:60px;
 width:700px;
-max-width:90%;
+max-width:92%;
 transform-style:preserve-3d;
 transition:transform .3s ease;
 box-shadow:0 40px 100px rgba(0,0,0,.6);
 animation:fadeIn .6s ease;
+text-align:center;
 }
 
 @keyframes fadeIn{
@@ -65,32 +65,33 @@ margin:20px 0;
 
 .meta{
 opacity:.85;
+margin-top:10px;
 }
 
-#map{
-margin-top:40px;
-width:100%;
-height:350px;
-border-radius:20px;
-overflow:hidden;
+.footer{
+margin-top:25px;
+font-weight:600;
+letter-spacing:.5px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="card" id="card">
+
 <img src="https://latakekabu.github.io/acro-rank/assets/img/acronavty.png" class="logo">
 
 <p>Присвоен спортивный разряд:</p>
+
 <div class="rank">${data.rank}</div>
 
 <p>${data.fullname}</p>
 <p>${data.city}</p>
 <p class="meta">Дата присвоения: ${today}</p>
 
-<p style="margin-top:20px;">Найдите свою базу — наслаждайтесь!</p>
+<div class="footer">Найдите свою базу — наслаждайтесь!</div>
 
-<div id="map"></div>
 </div>
 
 <script>
@@ -110,28 +111,30 @@ card.style.transform=\`rotateX(\${rotateX}deg) rotateY(\${rotateY}deg)\`;
 card.addEventListener("mouseleave",()=>{
 card.style.transform="rotateX(0deg) rotateY(0deg)";
 });
-
-ymaps.ready(function(){
-ymaps.geocode("${data.city}",{results:1}).then(function(res){
-const obj=res.geoObjects.get(0);
-if(!obj)return;
-const coords=obj.geometry.getCoordinates();
-const map=new ymaps.Map("map",{center:coords,zoom:10});
-const placemark=new ymaps.Placemark(coords,{balloonContent:"${data.rank}"});
-map.geoObjects.add(placemark);
-});
-});
 </script>
 
 </body>
 </html>
 `;
 
-const blob=new Blob([html],{type:"text/html"});
-const url=URL.createObjectURL(blob);
-const a=document.createElement("a");
-a.href=url;
-a.download="result.html";
-a.click();
-URL.revokeObjectURL(url);
+/* ===== DEVICE DETECTION ===== */
+
+const isMobile=/Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+
+if(isMobile){
+  const newWindow=window.open();
+  newWindow.document.write(html);
+  newWindow.document.close();
+}else{
+  const blob=new Blob([html],{type:"text/html"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="result.html";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 }
