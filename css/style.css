@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
+
 :root{
   --rank-white:#FFFFFF;
   --rank-red:#FF0000;
@@ -5,15 +7,18 @@
   --rank-green:#00FF00;
   --rank-blue:#0000FF;
   --rank-purple:#800080;
+
+  /* Premium typography */
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  font-family:var(--font-sans);
   min-height:100dvh;
-  perspective:1400px;
   overflow-x:hidden;
   background:
     linear-gradient(135deg,rgba(0,0,0,0.65),rgba(0,0,0,0.4)),
@@ -44,20 +49,22 @@ body::before{
   max-width:1200px;
   margin:auto;
   padding:60px 20px;
-  transform-style:preserve-3d;
+  
 }
 
 h1{
   text-align:center;
-  font-size:42px;
+  font-family:var(--font-serif);
+  font-size:44px;
   margin:0;
-  letter-spacing:1px;
+  letter-spacing:.5px;
 }
 
 .subtitle{
   text-align:center;
   opacity:.85;
   margin-bottom:50px;
+  font-weight:500;
 }
 
 .personal{
@@ -66,12 +73,12 @@ h1{
   margin-bottom:40px;
 }
 
-.personal input,
-.personal select{
+.personal input{
   padding:15px;
   border-radius:12px;
   border:none;
   font-size:16px;
+  font-family:var(--font-sans);
 }
 
 .grid{
@@ -86,29 +93,18 @@ h1{
   backdrop-filter:blur(18px);
   border-radius:20px;
   padding:25px;
-  transform-style:preserve-3d;
-  transition:transform .2s ease, box-shadow .2s ease;
+  transition: box-shadow .2s ease;
   box-shadow:0 20px 60px rgba(0,0,0,.4);
 }
 
 .block h2{
-  transform:translateZ(60px);
   margin-top:0;
+  font-family:var(--font-serif);
+  letter-spacing:.2px;
 }
 
 .block .items{
-  transform:translateZ(30px);
-}
 
-.block::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:20px;
-  background:radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,255,255,0.25), transparent 60%);
-  opacity:0;
-  transition:opacity .2s ease;
-  pointer-events:none;
 }
 
 .block:hover::after{
@@ -117,7 +113,36 @@ h1{
 
 .items{
   display:grid;
-  gap:8px;
+  gap:10px;
+}
+
+/* Labels layout */
+.items label{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  line-height:1.25;
+  user-select:none;
+}
+
+/* ✅ Чекбоксы ×3 (и удобнее пальцем) */
+.items input[type="checkbox"]{
+  width:24px;
+  height:24px;
+  margin-top:2px;
+  accent-color:#ff0066;
+  cursor:pointer;
+  flex:0 0 24px;
+}
+
+/* Увеличиваем зону клика по label */
+.items label{
+  padding:6px 8px;
+  border-radius:12px;
+  transition:background .15s ease;
+}
+.items label:hover{
+  background:rgba(255,255,255,0.06);
 }
 
 .submit{
@@ -130,16 +155,100 @@ h1{
   background:linear-gradient(90deg,#ff4d00,#ff0066);
   color:#fff;
   cursor:pointer;
-  transform-style:preserve-3d;
-  transition:transform .2s ease, box-shadow .2s ease;
+  transition: box-shadow .2s ease;
   box-shadow:0 15px 40px rgba(255,0,100,.4);
+  font-family:var(--font-sans);
+  font-weight:700;
+  letter-spacing:.2px;
 }
 
 .submit:hover{
-  transform:scale(1.05) translateZ(20px);
   box-shadow:0 20px 60px rgba(255,0,100,.6);
+}
+
+/* ===== RESULT ===== */
+.result{
+  margin-top:18px;
+}
+
+.result-card{
+  background:rgba(255,255,255,0.10);
+  backdrop-filter:blur(18px);
+  border-radius:20px;
+  padding:18px 18px;
+  box-shadow:0 18px 55px rgba(0,0,0,.35);
+}
+
+.result-title{
+  margin:0 0 8px 0;
+  font-family:var(--font-serif);
+  font-size:28px;
+  letter-spacing:.2px;
+}
+
+.result-meta{
+  margin:0 0 14px 0;
+  opacity:.9;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:12px;
+}
+
+.result-block{
+  background:rgba(0,0,0,0.25);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:16px;
+  padding:12px 12px;
+}
+
+.result-label{
+  font-size:13px;
+  opacity:.85;
+  margin-bottom:6px;
+}
+
+.result-value{
+  font-size:20px;
+  font-weight:700;
+}
+
+.skills-list{
+  list-style:none;
+  padding:0;
+  margin:8px 0 0 0;
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+}
+
+.skills-list li{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  background:rgba(0,0,0,0.18);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:14px;
+  padding:10px 12px;
+}
+
+.skill-name{
+  opacity:.9;
+}
+
+.skill-val{
+  font-weight:800;
+}
+
+.result-levels{
+  margin:0;
+  opacity:.9;
 }
 
 @media(max-width:900px){
   .grid{grid-template-columns:1fr;}
+  .skills-list{grid-template-columns:1fr;}
+  .result-grid{grid-template-columns:1fr;}
 }
