@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Акройога Флаер — Расчёт спортивного разряда</title>
+<meta name="description" content="Официальный расчёт спортивного разряда флаера по системе 20 элементов и 7 компетенций. Версия 2.2.">
+
+<link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+<div class="bg-logo"></div>
+
+<main class="container">
+
+<h1>Акройога Флаер</h1>
+<p class="subtitle">Расчёт спортивного разряда v2.2</p>
+
+<form id="flyer-form">
+
+<section class="personal">
+<input type="text" name="fullname" placeholder="ФИО" required>
+<input type="text" name="city" placeholder="Город" required>
+<select name="diploma" required>
+<option value="">Тип диплома</option>
+<option>Стандартный</option>
+<option>Премиальный</option>
+</select>
+</section>
+
+<section class="grid">
+
+<div class="block" id="block1"><h2>База</h2><div class="items"></div></div>
+<div class="block" id="block2"><h2>Угол / Прогрессия</h2><div class="items"></div></div>
+<div class="block" id="block3"><h2>Силовые / Баланс</h2><div class="items"></div></div>
+<div class="block" id="block4"><h2>Прогрессии</h2><div class="items"></div></div>
+
+</section>
+
+<button class="submit">Сформировать разряд</button>
+
+</form>
+
+</main>
+
+<script src="./js/result-template.js" defer></script>
+<script src="./js/main.js" defer></script>
+</body>
+</html>
