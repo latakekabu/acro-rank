@@ -1,5 +1,11 @@
 function generateResultHTML(data){
 
+const today=new Date().toLocaleDateString("ru-RU",{
+  day:"numeric",
+  month:"long",
+  year:"numeric"
+});
+
 const html=`
 <!DOCTYPE html>
 <html lang="ru">
@@ -14,39 +20,57 @@ const html=`
 body{
 margin:0;
 font-family:system-ui;
-background:linear-gradient(135deg,#e0f2fe,#ffffff);
+min-height:100dvh;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100dvh;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+perspective:1400px;
 }
 
 .card{
-background:rgba(255,255,255,0.7);
-backdrop-filter:blur(25px);
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
 border-radius:30px;
 padding:60px;
-box-shadow:0 40px 100px rgba(0,0,0,0.15);
-text-align:center;
+width:700px;
+max-width:90%;
 transform-style:preserve-3d;
-transition:transform .4s ease;
+transition:transform .3s ease;
+box-shadow:0 40px 100px rgba(0,0,0,.6);
+animation:fadeIn .6s ease;
 }
 
-.card:hover{
-transform:rotateX(6deg) rotateY(-6deg);
+@keyframes fadeIn{
+from{opacity:0;transform:scale(.95);}
+to{opacity:1;transform:scale(1);}
+}
+
+.logo{
+width:120px;
+margin:auto;
+display:block;
+margin-bottom:20px;
 }
 
 .rank{
-font-size:42px;
-font-weight:700;
+font-size:56px;
+font-weight:800;
 color:${data.color};
-margin:25px 0;
+text-shadow:0 0 25px ${data.color};
+transform:translateZ(80px);
+margin:20px 0;
+}
+
+.meta{
+opacity:.85;
 }
 
 #map{
 margin-top:40px;
-width:600px;
-height:400px;
+width:100%;
+height:350px;
 border-radius:20px;
 overflow:hidden;
 }
@@ -54,19 +78,43 @@ overflow:hidden;
 </head>
 <body>
 
-<div class="card">
-<h1>Персональный результат</h1>
+<div class="card" id="card">
+<img src="https://latakekabu.github.io/acro-rank/assets/img/acronavty.png" class="logo">
+
+<p>Присвоен спортивный разряд:</p>
+<div class="rank">${data.rank}</div>
+
 <p>${data.fullname}</p>
 <p>${data.city}</p>
-<div class="rank">${data.rank}</div>
+<p class="meta">Дата присвоения: ${today}</p>
+
+<p style="margin-top:20px;">Найдите свою базу — наслаждайтесь!</p>
+
 <div id="map"></div>
 </div>
 
 <script>
-ymaps.ready(function () {
+const card=document.getElementById("card");
+
+card.addEventListener("mousemove",(e)=>{
+const rect=card.getBoundingClientRect();
+const x=e.clientX-rect.left;
+const y=e.clientY-rect.top;
+const centerX=rect.width/2;
+const centerY=rect.height/2;
+const rotateX=((y-centerY)/centerY)*6;
+const rotateY=((x-centerX)/centerX)*-6;
+card.style.transform=\`rotateX(\${rotateX}deg) rotateY(\${rotateY}deg)\`;
+});
+
+card.addEventListener("mouseleave",()=>{
+card.style.transform="rotateX(0deg) rotateY(0deg)";
+});
+
+ymaps.ready(function(){
 ymaps.geocode("${data.city}",{results:1}).then(function(res){
 const obj=res.geoObjects.get(0);
-if(!obj) return;
+if(!obj)return;
 const coords=obj.geometry.getCoordinates();
 const map=new ymaps.Map("map",{center:coords,zoom:10});
 const placemark=new ymaps.Placemark(coords,{balloonContent:"${data.rank}"});
