@@ -1,26 +1,145 @@
-/* ===== ADVANCED 3D ===== */
+:root{
+  --rank-white:#FFFFFF;
+  --rank-red:#FF0000;
+  --rank-yellow:#FFFF00;
+  --rank-green:#00FF00;
+  --rank-blue:#0000FF;
+  --rank-purple:#800080;
+}
 
-const blocks=document.querySelectorAll(".block");
+*{box-sizing:border-box}
 
-blocks.forEach(block=>{
-  block.addEventListener("mousemove",(e)=>{
-    const rect=block.getBoundingClientRect();
-    const x=e.clientX-rect.left;
-    const y=e.clientY-rect.top;
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  min-height:100dvh;
+  perspective:1400px;
+  overflow-x:hidden;
+  background:
+    linear-gradient(135deg,rgba(0,0,0,0.65),rgba(0,0,0,0.4)),
+    url("../assets/img/acronavty.png") center/cover no-repeat fixed;
+  color:#fff;
+}
 
-    block.style.setProperty("--x",x+"px");
-    block.style.setProperty("--y",y+"px");
+/* Спортивная диагональная текстура */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 2px,
+      transparent 2px,
+      transparent 8px
+    );
+  pointer-events:none;
+  z-index:0;
+}
 
-    const centerX=rect.width/2;
-    const centerY=rect.height/2;
+.container{
+  position:relative;
+  z-index:2;
+  max-width:1200px;
+  margin:auto;
+  padding:60px 20px;
+  transform-style:preserve-3d;
+}
 
-    const rotateX=((y-centerY)/centerY)*8;
-    const rotateY=((x-centerX)/centerX)*-8;
+h1{
+  text-align:center;
+  font-size:42px;
+  margin:0;
+  letter-spacing:1px;
+}
 
-    block.style.transform=`rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
+.subtitle{
+  text-align:center;
+  opacity:.85;
+  margin-bottom:50px;
+}
 
-  block.addEventListener("mouseleave",()=>{
-    block.style.transform="rotateX(0deg) rotateY(0deg)";
-  });
-});
+.personal{
+  display:grid;
+  gap:15px;
+  margin-bottom:40px;
+}
+
+.personal input,
+.personal select{
+  padding:15px;
+  border-radius:12px;
+  border:none;
+  font-size:16px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:30px;
+}
+
+.block{
+  position:relative;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  border-radius:20px;
+  padding:25px;
+  transform-style:preserve-3d;
+  transition:transform .2s ease, box-shadow .2s ease;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.block h2{
+  transform:translateZ(60px);
+  margin-top:0;
+}
+
+.block .items{
+  transform:translateZ(30px);
+}
+
+.block::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:20px;
+  background:radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,255,255,0.25), transparent 60%);
+  opacity:0;
+  transition:opacity .2s ease;
+  pointer-events:none;
+}
+
+.block:hover::after{
+  opacity:1;
+}
+
+.items{
+  display:grid;
+  gap:8px;
+}
+
+.submit{
+  margin-top:50px;
+  padding:18px;
+  width:100%;
+  font-size:18px;
+  border:none;
+  border-radius:20px;
+  background:linear-gradient(90deg,#ff4d00,#ff0066);
+  color:#fff;
+  cursor:pointer;
+  transform-style:preserve-3d;
+  transition:transform .2s ease, box-shadow .2s ease;
+  box-shadow:0 15px 40px rgba(255,0,100,.4);
+}
+
+.submit:hover{
+  transform:scale(1.05) translateZ(20px);
+  box-shadow:0 20px 60px rgba(255,0,100,.6);
+}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr;}
+}
